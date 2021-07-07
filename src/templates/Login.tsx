@@ -1,7 +1,6 @@
-import { push } from 'connected-react-router'
 import React from 'react'
 import { useDispatch } from 'react-redux'
-import { signInAction } from 'reducks/users/actions'
+import { signIn } from 'reducks/users/operations'
 
 const Login = (): JSX.Element => {
   const dispath = useDispatch()
@@ -9,14 +8,7 @@ const Login = (): JSX.Element => {
   return (
     <div>
       <h2>ログイン</h2>
-      <button
-        onClick={() => {
-          dispath(signInAction({ uid: '0001', username: 'nishinohi' }))
-          dispath(push('/'))
-        }}
-      >
-        ログインするお
-      </button>
+      <button onClick={() => dispath(signIn())}>ログインするお</button>
     </div>
   )
 }

@@ -3,6 +3,7 @@ import { UsersReducer } from 'reducks/users/reducers'
 import { connectRouter, routerMiddleware, RouterState } from 'connected-react-router'
 import { History } from 'history'
 import { UserState } from 'reducks/users/types'
+import thunk from 'redux-thunk'
 
 export type AppState = {
   router: Reducer<RouterState>
@@ -15,6 +16,6 @@ export default function createStore(history: History): Store {
       router: connectRouter(history),
       users: UsersReducer,
     }),
-    applyMiddleware(routerMiddleware(history))
+    applyMiddleware(routerMiddleware(history), thunk)
   )
 }
