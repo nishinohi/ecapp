@@ -11,7 +11,7 @@ export type UsersState = {
 }
 
 export type UserState = {
-  isSignedIn: boolean
+  isSignedIn?: boolean
   uid: string
   username: string
 }
