@@ -1,6 +1,5 @@
-import { UserState } from 'reducks/store/initialState'
+import { SignInAction, SignOutAction, SIGN_IN, SIGN_OUT, UserState } from './types'
 
-export const SIGN_IN = 'SIGN_IN'
 export const signInAction = (userState: UserState): SignInAction => {
   return {
     type: SIGN_IN,
@@ -12,12 +11,6 @@ export const signInAction = (userState: UserState): SignInAction => {
   }
 }
 
-type SignInAction = {
-  type: typeof SIGN_IN
-  payload: UserState
-}
-
-export const SIGN_OUT = 'SIGN_OUT'
 export const signOutAction = (): SignOutAction => {
   return {
     type: SIGN_OUT,
@@ -28,10 +21,3 @@ export const signOutAction = (): SignOutAction => {
     },
   }
 }
-
-type SignOutAction = {
-  type: typeof SIGN_OUT
-  payload: UserState
-}
-
-export type UserAction = SignInAction | SignOutAction

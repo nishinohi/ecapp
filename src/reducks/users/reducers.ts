@@ -1,10 +1,9 @@
-import initialState, { UserState } from 'reducks/store/initialState'
-import { UserAction } from './actions'
-import * as Actions from './actions'
+import initialState from 'reducks/store/initialState'
+import { SIGN_IN, UserAction, UserState } from './types'
 
 export const UsersReducer = (state: UserState = initialState.users, action: UserAction): UserState => {
   switch (action.type) {
-    case Actions.SIGN_IN:
+    case SIGN_IN:
       return {
         ...state,
         ...action.payload,

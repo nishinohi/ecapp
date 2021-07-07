@@ -1,3 +1,5 @@
+import { UserState } from 'reducks/users/types'
+
 const initialState: UsersState = {
   users: {
     isSignedIn: false,
@@ -6,14 +8,8 @@ const initialState: UsersState = {
   },
 }
 
-export type UsersState = {
+type UsersState = {
   users: UserState
-}
-
-export type UserState = {
-  isSignedIn?: boolean
-  uid: string
-  username: string
 }
 
 export default initialState

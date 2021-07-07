@@ -2,9 +2,9 @@ import { createStore as reduxCreateStore, combineReducers, Store, applyMiddlewar
 import { UsersReducer } from 'reducks/users/reducers'
 import { connectRouter, routerMiddleware, RouterState } from 'connected-react-router'
 import { History } from 'history'
-import { UserState } from './initialState'
+import { UserState } from 'reducks/users/types'
 
-export type AppStore = {
+export type AppState = {
   router: Reducer<RouterState>
   users: UserState
 }

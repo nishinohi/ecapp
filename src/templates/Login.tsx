@@ -1,18 +1,22 @@
 import { push } from 'connected-react-router'
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { AppStore } from 'reducks/store/store'
+import { useDispatch } from 'react-redux'
+import { signInAction } from 'reducks/users/actions'
 
 const Login = (): JSX.Element => {
   const dispath = useDispatch()
-  const selector = useSelector((state: AppStore) => state)
-
-  console.log(selector.router)
 
   return (
     <div>
       <h2>ログイン</h2>
-      <button onClick={() => dispath(push('/'))}>ログインするお</button>
+      <button
+        onClick={() => {
+          dispath(signInAction({ uid: '0001', username: 'nishinohi' }))
+          dispath(push('/'))
+        }}
+      >
+        ログインするお
+      </button>
     </div>
   )
 }
