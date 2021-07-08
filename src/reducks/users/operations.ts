@@ -10,7 +10,7 @@ export const signIn = (): ThunkAction<void, AppState, unknown, AnyAction> => {
     const isSignedIn = state.users.isSignedIn
 
     if (!isSignedIn) {
-      const url = 'https://api.github.com/users/deatiger'
+      const url = 'https://api.github.com/users/nishinohi'
       const response = await fetch(url)
         .then((res) => res.json())
         .catch(() => null)
