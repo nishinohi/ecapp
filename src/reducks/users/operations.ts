@@ -1,8 +1,36 @@
-import { signInAction } from './actions'
+import { signInAction, signOutAction } from './actions'
 import { push } from 'connected-react-router'
 import { AnyAction } from 'redux'
 import { ThunkAction } from 'redux-thunk'
 import { auth, db, FirebaseTimestamp } from '../../firebase/index'
+
+export const listenAuthState = (): ThunkAction<void, void, unknown, AnyAction> => {
+  return async (dispatch) => {
+    return auth.onAuthStateChanged((user) => {
+      if (user) {
+        const uid = user.uid
+        db.collection('users')
+          .doc(uid)
+          .get()
+          .then((snapshot) => {
+            const data = snapshot.data()
+            if (!data) return
+            dispatch(
+              signInAction({
+                isSignedIn: true,
+                role: data.customer,
+                uid: uid,
+                username: data.username,
+              })
+            )
+            dispatch(push('/'))
+          })
+      } else {
+        dispatch(push('/signin'))
+      }
+    })
+  }
+}
 
 export const signIn = (email: string, password: string): ThunkAction<void, void, unknown, AnyAction> => {
   return async (dispatch) => {
@@ -71,6 +99,15 @@ export const signUp = (
             dispatch(push('/'))
           })
       }
+    })
+  }
+}
+
+export const signOut = (): ThunkAction<void, void, unknown, AnyAction> => {
+  return async (dispatch) => {
+    auth.signOut().then(() => {
+      dispatch(signOutAction())
+      dispatch(push('/signin'))
     })
   }
 }
