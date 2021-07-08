@@ -1,4 +1,4 @@
-import { createStore as reduxCreateStore, combineReducers, Store, applyMiddleware, Reducer } from 'redux'
+import { createStore as reduxCreateStore, combineReducers, Store, applyMiddleware, Reducer, compose } from 'redux'
 import { UsersReducer } from 'reducks/users/reducers'
 import { connectRouter, routerMiddleware, RouterState } from 'connected-react-router'
 import { History } from 'history'
@@ -10,12 +10,14 @@ export type AppState = {
   users: UserState
 }
 
+const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+
 export default function createStore(history: History): Store {
   return reduxCreateStore(
     combineReducers({
       router: connectRouter(history),
       users: UsersReducer,
     }),
-    applyMiddleware(routerMiddleware(history), thunk)
+    composeEnhancers(applyMiddleware(routerMiddleware(history), thunk))
   )
 }
