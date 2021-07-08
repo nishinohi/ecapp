@@ -8,7 +8,7 @@ const Login = (): JSX.Element => {
   return (
     <div>
       <h2>ログイン</h2>
-      <button onClick={() => dispath(signIn())}>ログインするお</button>
+      {/* <button onClick={() => dispath(signIn())}>ログインするお</button> */}
     </div>
   )
 }
