@@ -172,3 +172,6 @@
     }
 }
 
+.clickable {
+    cursor: pointer;
+}

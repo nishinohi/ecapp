@@ -111,3 +111,21 @@ export const signOut = (): ThunkAction<void, void, unknown, AnyAction> => {
     })
   }
 }
+
+export const resetPassword = (email: string): ThunkAction<void, void, unknown, AnyAction> => {
+  return async (dispatch) => {
+    if (email === '') {
+      alert('必須項目が未入力です')
+      return false
+    }
+    auth
+      .sendPasswordResetEmail(email)
+      .then(() => {
+        alert('入力されたアドレスにパスワードリセット用のメールを送信しました')
+        dispatch(push('/signin'))
+      })
+      .catch(() => {
+        alert('パスワードリセットに失敗しました')
+      })
+  }
+}

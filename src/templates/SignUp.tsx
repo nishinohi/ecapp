@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useCallback } from 'react'
 import { signUp } from 'reducks/users/operations'
 import { useDispatch } from 'react-redux'
+import { push } from 'connected-react-router'
 
 const SignUp = (): JSX.Element => {
   const dispatch = useDispatch()
@@ -68,6 +69,10 @@ const SignUp = (): JSX.Element => {
           label={'アカウント登録'}
           onClick={() => dispatch(signUp(username, email, password, confirmPassword))}
         />
+        <div className="module-spacer--small" />
+        <p className="clickable" onClick={() => dispatch(push('/signin'))}>
+          アカウントをお持ちの場合
+        </p>
       </div>
     </div>
   )
