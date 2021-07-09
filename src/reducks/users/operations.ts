@@ -23,7 +23,6 @@ export const listenAuthState = (): ThunkAction<void, void, unknown, AnyAction> =
                 username: data.username,
               })
             )
-            dispatch(push('/'))
           })
       } else {
         dispatch(push('/signin'))
