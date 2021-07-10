@@ -2,6 +2,7 @@ import { AnyAction } from 'redux'
 import { ThunkAction } from 'redux-thunk'
 import { push } from 'connected-react-router'
 import { db, FirebaseTimestamp } from '../../firebase'
+import { Image } from 'components/Products/types'
 
 const productRef = db.collection('products')
 
@@ -10,7 +11,8 @@ export const saveProduct = (
   description: string,
   category: string,
   gender: string,
-  price: string
+  price: string,
+  images: Image[]
 ): ThunkAction<void, void, unknown, AnyAction> => {
   return async (dispatch) => {
     const timeStamp = FirebaseTimestamp.now()
@@ -22,6 +24,7 @@ export const saveProduct = (
       gender: gender,
       name: name,
       price: parseInt(price, 10),
+      images: images,
       updated_at: timeStamp,
       created_at: timeStamp,
     }
