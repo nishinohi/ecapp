@@ -5,17 +5,27 @@ import { useCallback } from 'react'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { saveProduct } from 'reducks/products/operation'
-import { Image } from 'components/Products/types'
+import { Image, Size } from 'components/Products/types'
+import { useEffect } from 'react'
+import { db } from '../firebase'
+import { SetSizeArea } from 'components/Products'
 
 const ProductEdit = (): JSX.Element => {
   const dispatch = useDispatch()
+
+  let id = window.location.pathname.split('/product/edit')[1]
+
+  if (id !== '') {
+    id = id.split('/')[1]
+  }
 
   const [name, setName] = useState(''),
     [description, setDescription] = useState(''),
     [category, setCategory] = useState(''),
     [gender, setGender] = useState(''),
     [images, setImages] = useState<Image[]>([]),
-    [price, setPrice] = useState('')
+    [price, setPrice] = useState(''),
+    [sizes, setSizes] = useState<Size[]>([])
 
   const inputName = useCallback((event) => setName(event.target.value), [setName])
   const inputDescription = useCallback((event) => setDescription(event.target.value), [setDescription])
@@ -52,6 +62,25 @@ const ProductEdit = (): JSX.Element => {
       name: '全て',
     },
   ]
+
+  useEffect(() => {
+    if (id !== '') {
+      db.collection('products')
+        .doc(id)
+        .get()
+        .then((snapshot) => {
+          const data = snapshot.data()
+          if (!data) throw new Error('選択された商品が登録されていません')
+          setImages(data.images)
+          setName(data.name)
+          setDescription(data.description)
+          setCategory(data.category)
+          setGender(data.gender)
+          setPrice(data.price)
+          setSizes(data.sizes)
+        })
+    }
+  }, [id])
 
   return (
     <section>
@@ -96,11 +125,13 @@ const ProductEdit = (): JSX.Element => {
           value={price}
           type="number"
         />
-        <div className="module-spacer--medium" />
+        <div className="module-spacer--small" />
+        <SetSizeArea sizes={sizes} setSizes={setSizes} />
+        <div className="module-spacer--small" />
         <div className="center">
           <PrimaryButton
             label="商品情報を保存"
-            onClick={() => dispatch(saveProduct(name, description, category, gender, price, images))}
+            onClick={() => dispatch(saveProduct(id, name, description, category, gender, price, images, sizes))}
           ></PrimaryButton>
         </div>
       </div>
