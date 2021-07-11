@@ -3,8 +3,26 @@ import { ThunkAction } from 'redux-thunk'
 import { push } from 'connected-react-router'
 import { db, FirebaseTimestamp } from '../../firebase'
 import { Image, Size } from 'components/Products/types'
+import { ProductData } from './types'
+import { fetchProductsAction } from './actions'
 
-const productRef = db.collection('products')
+const productsRef = db.collection('products')
+
+export const fetchProducts = (): ThunkAction<void, void, unknown, AnyAction> => {
+  return async (dispatch) => {
+    productsRef
+      .orderBy('updated_at', 'desc')
+      .get()
+      .then((snapshots) => {
+        const productsList: ProductData[] = []
+        snapshots.forEach((snapshot) => {
+          const productData = snapshot.data()
+          productsList.push(productData as ProductData)
+        })
+        dispatch(fetchProductsAction(productsList))
+      })
+  }
+}
 
 export const saveProduct = (
   id: string,
@@ -20,39 +38,27 @@ export const saveProduct = (
     const timeStamp = FirebaseTimestamp.now()
     const isNewCreate = id === ''
 
-    const data = isNewCreate
-      ? {
-          id: '',
-          category: category,
-          description: description,
-          gender: gender,
-          name: name,
-          price: parseInt(price, 10),
-          images: images,
-          sizes: sizes,
-          updated_at: timeStamp,
-          created_at: timeStamp,
-        }
-      : {
-          id: '',
-          category: category,
-          description: description,
-          gender: gender,
-          name: name,
-          price: parseInt(price, 10),
-          images: images,
-          sizes: sizes,
-          updated_at: timeStamp,
-        }
-
-    if (isNewCreate) {
-      const ref = productRef.doc()
-      const id = ref.id
-      data.id = id
+    const data: ProductData = {
+      id: '',
+      category: category,
+      description: description,
+      gender: gender,
+      name: name,
+      price: parseInt(price, 10),
+      images: images,
+      sizes: sizes,
+      updated_at: timeStamp,
     }
 
-    return productRef
-      .doc(id)
+    let commitId = id
+    if (isNewCreate) {
+      data.created_at = timeStamp
+      data.id = productsRef.doc().id
+      commitId = data.id
+    }
+
+    return productsRef
+      .doc(commitId)
       .set(data, { merge: true })
       .then(() => {
         dispatch(push('/'))

@@ -20,7 +20,11 @@ export const SelectBox = (props: SelectBoxProps): JSX.Element => {
   return (
     <FormControl className={classes.formControl}>
       <InputLabel>{props.label}</InputLabel>
-      <Select required={props.required} value={props.value} onChange={(event) => props.select(event.target.value)}>
+      <Select
+        required={props.required}
+        value={props.value}
+        onChange={(event) => props.select(event.target.value as string)}
+      >
         {props.options.map((option) => (
           <MenuItem key={option.id} value={option.id}>
             {option.name}

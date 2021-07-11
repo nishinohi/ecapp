@@ -9,6 +9,6 @@ export type SelectBoxProps = {
   label: string
   required: boolean
   value: string
-  select: (value: any) => void
+  select: React.Dispatch<React.SetStateAction<string>>
   options: { id: string; name: string }[]
 }

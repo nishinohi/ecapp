@@ -1,9 +1,16 @@
-import { AnyAction } from 'redux'
 import initialState from '../store/initialState'
-import { ProductsState } from './types'
+import { FETCH_PRODUCTS, ProductsAction, ProductsState } from './types'
 
-export const ProductsReducer = (state: ProductsState = initialState.products, action: AnyAction): ProductsState => {
+export const ProductsReducer = (
+  state: ProductsState = initialState.products,
+  action: ProductsAction
+): ProductsState => {
   switch (action.type) {
+    case FETCH_PRODUCTS:
+      return {
+        ...state,
+        list: [...action.payload],
+      }
     default:
       return state
   }
