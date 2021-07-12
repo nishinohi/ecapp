@@ -21,6 +21,8 @@ export type ProductData = {
 export const FETCH_PRODUCTS = 'FETCH_PRODUCTS'
 
 export type ProductsAction = {
-  type: typeof FETCH_PRODUCTS
+  type: typeof FETCH_PRODUCTS | typeof DELETE_PRODUCTS
   payload: ProductData[]
 }
+
+export const DELETE_PRODUCTS = 'DELETE_PRODUCTS'

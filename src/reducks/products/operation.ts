@@ -4,7 +4,8 @@ import { push } from 'connected-react-router'
 import { db, FirebaseTimestamp } from '../../firebase'
 import { Image, Size } from 'components/Products/types'
 import { ProductData } from './types'
-import { fetchProductsAction } from './actions'
+import { deleteProductAction, fetchProductsAction } from './actions'
+import { AppState } from 'reducks/store/store'
 
 const productsRef = db.collection('products')
 
@@ -20,6 +21,19 @@ export const fetchProducts = (): ThunkAction<void, void, unknown, AnyAction> => 
           productsList.push(productData as ProductData)
         })
         dispatch(fetchProductsAction(productsList))
+      })
+  }
+}
+
+export const deleteProduct = (id: string): ThunkAction<void, AppState, unknown, AnyAction> => {
+  return async (dispatch, getState) => {
+    productsRef
+      .doc(id)
+      .delete()
+      .then(() => {
+        const prevProducts = getState().products.list
+        const nextProducts = prevProducts.filter((product) => product.id !== id)
+        dispatch(deleteProductAction(nextProducts))
       })
   }
 }
