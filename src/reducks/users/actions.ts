@@ -1,4 +1,13 @@
-import { SignInAction, SignOutAction, SIGN_IN, SIGN_OUT, UserState } from './types'
+import {
+  AddedProduct,
+  FetchProductsInCartActoin,
+  FETCH_PRODUCTS_IN_CART,
+  SignInAction,
+  SignOutAction,
+  SIGN_IN,
+  SIGN_OUT,
+  UserState,
+} from './types'
 
 export const signInAction = (userState: UserState): SignInAction => {
   return {
@@ -8,6 +17,7 @@ export const signInAction = (userState: UserState): SignInAction => {
       role: userState.role,
       uid: userState.uid,
       username: userState.username,
+      cart: userState.cart,
     },
   }
 }
@@ -20,6 +30,14 @@ export const signOutAction = (): SignOutAction => {
       role: '',
       uid: '',
       username: '',
+      cart: [],
     },
+  }
+}
+
+export const fetchProductsInCartActoin = (products: AddedProduct[]): FetchProductsInCartActoin => {
+  return {
+    type: FETCH_PRODUCTS_IN_CART,
+    payload: products,
   }
 }

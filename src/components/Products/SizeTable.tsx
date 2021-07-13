@@ -15,6 +15,7 @@ const useStyles = makeStyles({
 
 type SizeTableProps = {
   sizes: Size[]
+  addProduct: (selctedSize: string) => void
 }
 
 const SizeTable = (props: SizeTableProps): JSX.Element => {
@@ -34,7 +35,7 @@ const SizeTable = (props: SizeTableProps): JSX.Element => {
                 <TableCell>残り{size.quantity}点</TableCell>
                 <TableCell className={classes.iconCell}>
                   {size.quantity > 0 ? (
-                    <IconButton>
+                    <IconButton onClick={() => props.addProduct(size.size)}>
                       <ShoppingCartIcon />
                     </IconButton>
                   ) : (

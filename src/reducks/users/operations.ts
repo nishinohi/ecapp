@@ -1,8 +1,26 @@
-import { signInAction, signOutAction } from './actions'
+import { fetchProductsInCartActoin, signInAction, signOutAction } from './actions'
 import { push } from 'connected-react-router'
 import { AnyAction } from 'redux'
 import { ThunkAction } from 'redux-thunk'
 import { auth, db, FirebaseTimestamp } from '../../firebase/index'
+import { AppState } from 'reducks/store/store'
+import { AddedProduct, UserState } from './types'
+
+export const fetchProductsInCart = (products: AddedProduct[]): ThunkAction<void, void, unknown, AnyAction> => {
+  return async (dispatch) => {
+    dispatch(fetchProductsInCartActoin(products))
+  }
+}
+
+export const addProductToCart = (addedProduct: AddedProduct): ThunkAction<void, AppState, unknown, AnyAction> => {
+  return async (dispatch, getState) => {
+    const uid = getState().users.uid
+    const cartRef = db.collection('users').doc(uid).collection('cart').doc()
+    addedProduct['cartId'] = cartRef.id
+    await cartRef.set(addedProduct)
+    dispatch(push('/'))
+  }
+}
 
 export const listenAuthState = (): ThunkAction<void, void, unknown, AnyAction> => {
   return async (dispatch) => {
@@ -13,14 +31,15 @@ export const listenAuthState = (): ThunkAction<void, void, unknown, AnyAction> =
           .doc(uid)
           .get()
           .then((snapshot) => {
-            const data = snapshot.data()
+            const data = snapshot.data() as UserState
             if (!data) return
             dispatch(
               signInAction({
                 isSignedIn: true,
-                role: data.customer,
+                role: data.role,
                 uid: uid,
                 username: data.username,
+                cart: data.cart ? data.cart : [],
               })
             )
           })
@@ -50,6 +69,7 @@ export const signIn = (email: string, password: string): ThunkAction<void, void,
             role: data.role,
             uid: data.uid,
             username: data.username,
+            cart: data.cart,
           })
         )
         dispatch(push('/'))

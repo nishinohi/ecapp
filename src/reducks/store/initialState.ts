@@ -10,6 +10,7 @@ const initialState: InitialState = {
     role: '',
     uid: '',
     username: '',
+    cart: [],
   },
 }
 

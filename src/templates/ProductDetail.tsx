@@ -1,13 +1,15 @@
-import { db } from '../firebase'
+import { db, FirebaseTimestamp } from '../firebase'
 import React from 'react'
 import { useEffect } from 'react'
 import { useState } from 'react'
 import { ProductData } from 'reducks/products/types'
-import { useSelector } from 'react-redux'
-import { AppState } from 'reducks/store/store'
+import { useDispatch } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 import HTMLReactParser from 'html-react-parser'
 import { ImageSwiper, SizeTable } from '../components/Products/index'
+import { useCallback } from 'react'
+import { push } from 'connected-react-router'
+import { addProductToCart } from 'reducks/users/operations'
 
 const useStyles = makeStyles((theme) => ({
   sliderBox: {
@@ -47,11 +49,11 @@ const returnCodeToBr = (text: string) => {
 
 const ProductDetail = (): JSX.Element => {
   const classes = useStyles()
+  const dispatch = useDispatch()
 
-  const selector = useSelector((state: AppState) => state)
   const path = window.location.pathname
   const id = path.split('/product/')[1]
-  const [product, setProduct] = useState<ProductData | null>(null)
+  const [product, setProduct] = useState<ProductData>()
 
   useEffect(() => {
     db.collection('products')
@@ -59,9 +61,35 @@ const ProductDetail = (): JSX.Element => {
       .get()
       .then((doc) => {
         const data = doc.data()
+        if (data === undefined) {
+          dispatch(push('/'))
+          return
+        }
         setProduct(data as ProductData)
       })
   }, [])
+
+  const addProduct = useCallback(
+    (selectedSize: string) => {
+      if (product === undefined) return
+      const timestamp = FirebaseTimestamp.now()
+      dispatch(
+        addProductToCart({
+          cartId: '',
+          added_at: timestamp,
+          description: product.description,
+          gender: product.gender,
+          images: product.images,
+          name: product.name,
+          price: product.price,
+          productId: product.id,
+          quantity: 1,
+          size: selectedSize,
+        })
+      )
+    },
+    [product]
+  )
 
   return (
     <section className="c-section-wrapin">
@@ -74,7 +102,7 @@ const ProductDetail = (): JSX.Element => {
             <h2 className="u-text__headline">{product.name}</h2>
             <p className={classes.price}>{product.price.toLocaleString()}</p>
             <div className="module-spacer--extra-small" />
-            <SizeTable sizes={product.sizes}></SizeTable>
+            <SizeTable addProduct={addProduct} sizes={product.sizes}></SizeTable>
             <div className="module-spacer--extra-small" />
             <p>{returnCodeToBr(product.description)}</p>
           </div>
