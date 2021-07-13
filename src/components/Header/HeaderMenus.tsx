@@ -5,7 +5,7 @@ import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder'
 import MenuIcon from '@material-ui/icons/Menu'
 
-const HeaderMenus = (): JSX.Element => {
+const HeaderMenus = (props: any): JSX.Element => {
   return (
     <>
       <IconButton>
@@ -16,7 +16,7 @@ const HeaderMenus = (): JSX.Element => {
       <IconButton>
         <FavoriteBorderIcon />
       </IconButton>
-      <IconButton>
+      <IconButton onClick={(event) => props.handleDrawerToggle(event)}>
         <MenuIcon />
       </IconButton>
     </>
