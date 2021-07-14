@@ -1,6 +1,9 @@
+import { OrderHistoty } from 'reducks/products/types'
 import {
   AddedProduct,
+  FetchOrdersHistoryAction,
   FetchProductsInCartActoin,
+  FETCH_ORDERS_HISTORY,
   FETCH_PRODUCTS_IN_CART,
   SignInAction,
   SignOutAction,
@@ -14,6 +17,7 @@ export const signInAction = (userState: UserState): SignInAction => {
     type: SIGN_IN,
     payload: {
       isSignedIn: true,
+      orders: userState.orders,
       role: userState.role,
       uid: userState.uid,
       username: userState.username,
@@ -27,6 +31,7 @@ export const signOutAction = (): SignOutAction => {
     type: SIGN_OUT,
     payload: {
       isSignedIn: false,
+      orders: [],
       role: '',
       uid: '',
       username: '',
@@ -39,5 +44,12 @@ export const fetchProductsInCartActoin = (products: AddedProduct[]): FetchProduc
   return {
     type: FETCH_PRODUCTS_IN_CART,
     payload: products,
+  }
+}
+
+export const fetchOrdersHistoryAction = (history: OrderHistoty[]): FetchOrdersHistoryAction => {
+  return {
+    type: FETCH_ORDERS_HISTORY,
+    payload: history,
   }
 }

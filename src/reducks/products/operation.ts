@@ -93,7 +93,7 @@ export const orderProduct = (
         }
 
         orderRef.set(history)
-        dispatch(push('/order/complete'))
+        dispatch(push('/order/history'))
       })
       .catch(() => {
         alert('注文処理に失敗しました。通信環境をご確認のうえ、もう一度お試しください')

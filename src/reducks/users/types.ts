@@ -1,10 +1,12 @@
 import { Image } from 'components/Products/types'
 import firebase from 'firebase/app'
+import { OrderHistoty } from 'reducks/products/types'
 
-export type UserAction = SignInAction | SignOutAction | FetchProductsInCartActoin
+export type UserAction = SignInAction | SignOutAction | FetchProductsInCartActoin | FetchOrdersHistoryAction
 
 export type UserState = {
   isSignedIn?: boolean
+  orders: OrderHistoty[]
   role: string
   uid: string
   username: string
@@ -41,4 +43,11 @@ export const FETCH_PRODUCTS_IN_CART = 'FETCH_PRODUCTS_IN_CART'
 export type FetchProductsInCartActoin = {
   type: typeof FETCH_PRODUCTS_IN_CART
   payload: AddedProduct[]
+}
+
+export const FETCH_ORDERS_HISTORY = 'FETCH_ORDERS_HISTORY'
+
+export type FetchOrdersHistoryAction = {
+  type: typeof FETCH_ORDERS_HISTORY
+  payload: OrderHistoty[]
 }

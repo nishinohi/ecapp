@@ -1,14 +1,35 @@
-import { fetchProductsInCartActoin, signInAction, signOutAction } from './actions'
+import { fetchOrdersHistoryAction, fetchProductsInCartActoin, signInAction, signOutAction } from './actions'
 import { push } from 'connected-react-router'
 import { AnyAction } from 'redux'
 import { ThunkAction } from 'redux-thunk'
 import { auth, db, FirebaseTimestamp } from '../../firebase/index'
 import { AppState } from 'reducks/store/store'
 import { AddedProduct, UserState } from './types'
+import { OrderHistoty } from 'reducks/products/types'
 
 export const fetchProductsInCart = (products: AddedProduct[]): ThunkAction<void, void, unknown, AnyAction> => {
   return async (dispatch) => {
     dispatch(fetchProductsInCartActoin(products))
+  }
+}
+
+export const fetchOrderedHistory = (): ThunkAction<void, AppState, unknown, AnyAction> => {
+  return async (dispatch, getState) => {
+    const uid = getState().users.uid
+    const list: OrderHistoty[] = []
+
+    db.collection('users')
+      .doc(uid)
+      .collection('orders')
+      .orderBy('updated_at', 'desc')
+      .get()
+      .then((snapshots) => {
+        snapshots.forEach((snapshot) => {
+          const data = snapshot.data() as OrderHistoty
+          list.push(data)
+        })
+        dispatch(fetchOrdersHistoryAction(list))
+      })
   }
 }
 
@@ -36,6 +57,7 @@ export const listenAuthState = (): ThunkAction<void, void, unknown, AnyAction> =
             dispatch(
               signInAction({
                 isSignedIn: true,
+                orders: data.orders ? data.orders : [],
                 role: data.role,
                 uid: uid,
                 username: data.username,
@@ -66,6 +88,7 @@ export const signIn = (email: string, password: string): ThunkAction<void, void,
         dispatch(
           signInAction({
             isSignedIn: true,
+            orders: data.orders ? data.orders : [],
             role: data.role,
             uid: data.uid,
             username: data.username,

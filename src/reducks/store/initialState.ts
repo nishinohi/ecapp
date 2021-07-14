@@ -7,6 +7,7 @@ const initialState: InitialState = {
   },
   users: {
     isSignedIn: false,
+    orders: [],
     role: '',
     uid: '',
     username: '',
