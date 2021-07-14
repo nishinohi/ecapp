@@ -11,6 +11,7 @@ import { useEffect } from 'react'
 import { db } from '../../firebase'
 import { AddedProduct } from 'reducks/users/types'
 import { fetchProductsInCart } from 'reducks/users/operations'
+import { push } from 'connected-react-router'
 
 const HeaderMenus = (props: any): JSX.Element => {
   const selector = useSelector((state: AppState) => state)
@@ -50,7 +51,7 @@ const HeaderMenus = (props: any): JSX.Element => {
 
   return (
     <>
-      <IconButton>
+      <IconButton onClick={() => dispatch(push('/cart'))}>
         <Badge badgeContent={productsInCart.length} color="secondary">
           <ShoppingCartIcon />
         </Badge>

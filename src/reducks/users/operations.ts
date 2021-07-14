@@ -39,7 +39,7 @@ export const listenAuthState = (): ThunkAction<void, void, unknown, AnyAction> =
                 role: data.role,
                 uid: uid,
                 username: data.username,
-                cart: data.cart ? data.cart : [],
+                cart: data.cart,
               })
             )
           })
