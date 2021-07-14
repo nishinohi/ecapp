@@ -39,7 +39,7 @@ export const listenAuthState = (): ThunkAction<void, void, unknown, AnyAction> =
                 role: data.role,
                 uid: uid,
                 username: data.username,
-                cart: data.cart,
+                cart: data.cart ? data.cart : [],
               })
             )
           })
@@ -69,7 +69,7 @@ export const signIn = (email: string, password: string): ThunkAction<void, void,
             role: data.role,
             uid: data.uid,
             username: data.username,
-            cart: data.cart,
+            cart: data.cart ? data.cart : [],
           })
         )
         dispatch(push('/'))

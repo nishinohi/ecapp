@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react'
+import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/styles'
 import { AppBar, Toolbar } from '@material-ui/core'
 import logo from '../../assets/img/icons/logo.png'

@@ -1,6 +1,6 @@
 import React from 'react'
 import IconButton from '@material-ui/core/IconButton'
-import { Badge, unstable_createMuiStrictModeTheme } from '@material-ui/core'
+import { Badge } from '@material-ui/core'
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder'
 import MenuIcon from '@material-ui/icons/Menu'
@@ -52,7 +52,7 @@ const HeaderMenus = (props: any): JSX.Element => {
   return (
     <>
       <IconButton onClick={() => dispatch(push('/cart'))}>
-        <Badge badgeContent={productsInCart.length} color="secondary">
+        <Badge badgeContent={productsInCart ? productsInCart.length : 0} color="secondary">
           <ShoppingCartIcon />
         </Badge>
       </IconButton>

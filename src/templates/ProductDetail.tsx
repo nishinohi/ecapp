@@ -52,7 +52,7 @@ const ProductDetail = (): JSX.Element => {
   const dispatch = useDispatch()
 
   const path = window.location.pathname
-  const id = path.split('/product/')[1]
+  const id = path.split('/product/detail/')[1]
   const [product, setProduct] = useState<ProductData>()
 
   useEffect(() => {
